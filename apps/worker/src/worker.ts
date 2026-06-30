@@ -30,7 +30,7 @@ async function start() {
       console.log(`🔄 Processing lead-qualification job ${job.id}`);
       await processLeadQualification(job.data, prisma);
     },
-    { connection: redis, concurrency: 5 },
+    { connection: redis as any, concurrency: 5 },
   );
 
   leadWorker.on('completed', (job) => {
@@ -48,7 +48,7 @@ async function start() {
       console.log(`🔄 Processing whatsapp-summarize job ${job.id}`);
       await processWhatsappSummarize(job.data, prisma);
     },
-    { connection: redis, concurrency: 5 },
+    { connection: redis as any, concurrency: 5 },
   );
 
   summarizeWorker.on('completed', (job) => {
