@@ -3,7 +3,7 @@ import { Queue } from 'bullmq';
 import redis from '../../config/redis';
 import prisma from '../../config/db';
 
-const leadQualificationQueue = new Queue('lead-qualification', { connection: redis });
+const leadQualificationQueue = new Queue('lead-qualification', { connection: redis as any });
 
 export class WorkflowController {
   /**
