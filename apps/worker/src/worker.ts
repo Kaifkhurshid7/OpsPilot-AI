@@ -4,7 +4,7 @@ dotenv.config({ path: '../../.env' });
 import { Worker } from 'bullmq';
 import Redis from 'ioredis';
 import mongoose from 'mongoose';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../../../packages/prisma/generated/client';
 import { processLeadQualification } from './jobs/leadQualification.job';
 import { processWhatsappSummarize } from './jobs/whatsappSummarize.job';
 
