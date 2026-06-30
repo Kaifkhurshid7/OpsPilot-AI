@@ -32,7 +32,6 @@ AI Business Operations Platform — a single conversational workspace for managi
 | Auth          | Google OAuth 2.0 (PKCE), JWT           |
 | AI            | Google Gemini API (gemini-2.0-flash)   |
 | Messaging     | Meta WhatsApp Cloud API                |
-| Containers    | Docker, docker-compose                 |
 | Testing       | Jest, Supertest, Vitest                |
 
 ---
@@ -91,7 +90,7 @@ OpsPilot-AI/
 |   |-- config/            Shared tsconfig base
 |
 |-- docker/                Dockerfiles (backend, frontend, worker)
-|-- docker-compose.yml     Postgres, MongoDB, Redis services
+|-- docker-compose.yml     (Deprecated - use local services instead)
 |-- turbo.json             Turborepo task pipeline
 |-- package.json           Root workspace config
 ```
@@ -101,7 +100,9 @@ OpsPilot-AI/
 ## Prerequisites
 
 - Node.js 18 or higher
-- Docker Desktop (for PostgreSQL, MongoDB, Redis)
+- PostgreSQL 15+ (local installation)
+- MongoDB 7+ (local installation)
+- Redis 7+ (local installation)
 - A Google Cloud project with OAuth 2.0 credentials
 - A Google Gemini API key
 - Git
@@ -129,13 +130,9 @@ npm install
 npx prisma generate --schema=packages/prisma/schema.prisma
 ```
 
-4. Start infrastructure services:
+4. Set up local databases (PostgreSQL, MongoDB, Redis):
 
-```bash
-docker compose up -d
-```
-
-This starts PostgreSQL (port 5432), MongoDB (port 27017), and Redis (port 6379).
+See SETUP_NO_DOCKER.md for detailed installation instructions for each service.
 
 5. Create the `.env` file in the project root:
 
