@@ -53,7 +53,7 @@ export class AuthController {
         }),
       });
 
-      const tokenData = await tokenResponse.json();
+      const tokenData = (await tokenResponse.json()) as { access_token?: string };
 
       if (!tokenData.access_token) {
         res.status(400).json({ success: false, error: 'Failed to exchange code' });
@@ -65,7 +65,11 @@ export class AuthController {
         headers: { Authorization: `Bearer ${tokenData.access_token}` },
       });
 
-      const googleUser = await userInfoResponse.json();
+      const googleUser = (await userInfoResponse.json()) as {
+        id: string;
+        email: string;
+        name: string;
+      };
 
       // Find or create user in our DB
       const user = await AuthService.findOrCreateUser({
