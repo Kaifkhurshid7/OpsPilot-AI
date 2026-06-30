@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  REP
+}
+
+model Tenant {
+  id            String         @id @default(uuid())
+  name          String
+  industry      String?
+  onboarded     Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  users         User[]
+  contacts      Contact[]
+  opportunities Opportunity[]
+  tasks         Task[]
+  auditLogs     AuditLog[]
+  refreshTokens RefreshToken[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  email     String   @unique
+  name      String
+  googleId  String   @unique
+  role      Role     @default(OWNER)
+  createdAt DateTime @default(now())
+
+  @@index([tenantId])
+}
+
+model RefreshToken {
+  id          String   @id @default(uuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  userId      String
+  tokenHash   String   @unique
+  rotatedFrom String?
+  revoked     Boolean  @default(false)
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+
+  @@index([tenantId, userId])
+}
+
+model Contact {
+  id            String        @id @default(uuid())
+  tenantId      String
+  tenant        Tenant        @relation(fields: [tenantId], references: [id])
+  name          String
+  phone         String?
+  email         String?
+  source        String?
+  tags          String[]
+  createdAt     DateTime      @default(now())
+  opportunities Opportunity[]
+  tasks         Task[]
+
+  @@index([tenantId])
+  @@index([tenantId, phone])
+}
+
+model Opportunity {
+  id             String   @id @default(uuid())
+  tenantId       String
+  tenant         Tenant   @relation(fields: [tenantId], references: [id])
+  contactId      String
+  contact        Contact  @relation(fields: [contactId], references: [id])
+  title          String
+  value          Decimal  @default(0)
+  stage          String   @default("new")
+  score          Int?
+  nextBestAction String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([tenantId, stage])
+}
+
+model Task {
+  id        String   @id @default(uuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id])
+  title     String
+  dueAt     DateTime
+  status    String   @default("pending")
+  createdBy String
+  createdAt DateTime @default(now())
+
+  @@index([tenantId, status])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id])
+  actor      String
+  action     String
+  targetType String?
+  targetId   String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([tenantId, createdAt])
+}

@@ -1,0 +1,30 @@
+{
+  "name": "opspilot-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DareXAI - AI Business Operations Platform",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "db:migrate": "npm run migrate --workspace=packages/prisma",
+    "db:generate": "npm run generate --workspace=packages/prisma",
+    "db:seed": "npm run seed --workspace=packages/prisma",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "clean": "turbo run clean && rimraf node_modules"
+  },
+  "devDependencies": {
+    "turbo": "^2.1.0",
+    "rimraf": "^5.0.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "npm@10.0.0"
+}
