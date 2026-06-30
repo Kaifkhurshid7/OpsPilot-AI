@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../../../../packages/prisma/generated/client';
 import mongoose from 'mongoose';
 
 const WhatsAppMessageSchema = new mongoose.Schema({
