@@ -25,7 +25,7 @@ export async function searchContacts(
 
   return {
     found: contacts.length,
-    contacts: contacts.map((c) => ({
+    contacts: contacts.map((c: any) => ({
       id: c.id,
       name: c.name,
       phone: c.phone,

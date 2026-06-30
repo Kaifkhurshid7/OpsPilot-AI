@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, FunctionDeclarationSchemaType } from '@google/generative-ai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { env } from '../../config/env';
 
 const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
@@ -9,10 +9,10 @@ export const toolDeclarations = [
     name: 'search_contacts',
     description: 'Search contacts in the CRM by name, email, or phone number',
     parameters: {
-      type: FunctionDeclarationSchemaType.OBJECT,
+      type: 'OBJECT' as const,
       properties: {
         query: {
-          type: FunctionDeclarationSchemaType.STRING,
+          type: 'STRING' as const,
           description: 'Search query (name, email, or phone)',
         },
       },
@@ -23,18 +23,18 @@ export const toolDeclarations = [
     name: 'create_task',
     description: 'Create a new task/follow-up for a contact',
     parameters: {
-      type: FunctionDeclarationSchemaType.OBJECT,
+      type: 'OBJECT' as const,
       properties: {
         contactId: {
-          type: FunctionDeclarationSchemaType.STRING,
+          type: 'STRING' as const,
           description: 'The contact ID to associate the task with',
         },
         title: {
-          type: FunctionDeclarationSchemaType.STRING,
+          type: 'STRING' as const,
           description: 'Task title/description',
         },
         dueInHours: {
-          type: FunctionDeclarationSchemaType.NUMBER,
+          type: 'NUMBER' as const,
           description: 'Hours from now when the task is due (default: 24)',
         },
       },
@@ -45,18 +45,18 @@ export const toolDeclarations = [
     name: 'update_opportunity',
     description: 'Update an opportunity/deal stage or value',
     parameters: {
-      type: FunctionDeclarationSchemaType.OBJECT,
+      type: 'OBJECT' as const,
       properties: {
         opportunityId: {
-          type: FunctionDeclarationSchemaType.STRING,
+          type: 'STRING' as const,
           description: 'The opportunity ID to update',
         },
         stage: {
-          type: FunctionDeclarationSchemaType.STRING,
+          type: 'STRING' as const,
           description: 'New stage: new, qualifying, nurture, won, lost',
         },
         value: {
-          type: FunctionDeclarationSchemaType.NUMBER,
+          type: 'NUMBER' as const,
           description: 'Updated deal value',
         },
       },
@@ -67,14 +67,14 @@ export const toolDeclarations = [
     name: 'send_whatsapp',
     description: 'Send a WhatsApp message to a contact',
     parameters: {
-      type: FunctionDeclarationSchemaType.OBJECT,
+      type: 'OBJECT' as const,
       properties: {
         contactId: {
-          type: FunctionDeclarationSchemaType.STRING,
+          type: 'STRING' as const,
           description: 'The contact ID to send message to',
         },
         message: {
-          type: FunctionDeclarationSchemaType.STRING,
+          type: 'STRING' as const,
           description: 'The message content to send',
         },
       },
@@ -85,7 +85,7 @@ export const toolDeclarations = [
     name: 'fetch_business_metrics',
     description: 'Fetch business KPI metrics: active opportunities, pipeline value, pending tasks',
     parameters: {
-      type: FunctionDeclarationSchemaType.OBJECT,
+      type: 'OBJECT' as const,
       properties: {},
     },
   },
@@ -94,7 +94,7 @@ export const toolDeclarations = [
 export function getGeminiModel() {
   return genAI.getGenerativeModel({
     model: 'gemini-2.0-flash',
-    tools: [{ functionDeclarations: toolDeclarations }],
+    tools: [{ functionDeclarations: toolDeclarations as any }],
   });
 }
 
