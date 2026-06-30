@@ -5,7 +5,7 @@ import prisma from '../../config/db';
 import { Queue } from 'bullmq';
 import redis from '../../config/redis';
 
-const summarizeQueue = new Queue('whatsapp-summarize', { connection: redis });
+const summarizeQueue = new Queue('whatsapp-summarize', { connection: redis as any });
 
 export class WhatsAppController {
   /**
