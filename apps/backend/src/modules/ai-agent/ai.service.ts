@@ -102,7 +102,7 @@ export class AIService {
         }
 
         // Send tool results back to Gemini for final response
-        const toolResponses = functionCalls.map((fc, i) => ({
+        const toolResponses = functionCalls.map((fc: any, i: number) => ({
           functionResponse: {
             name: fc.name,
             response: toolCalls[i]?.result || { error: 'Tool not found' },
